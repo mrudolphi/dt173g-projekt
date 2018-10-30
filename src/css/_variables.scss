@@ -1,0 +1,29 @@
+$primary-color: #333;
+$white: rgba(255, 255, 255, 1);
+$black: rgba(0, 0, 0, 1);
+$grey: #ddd;
+$blue: darken(rgba(0, 95, 255, 1), 5%);
+$red: rgba(200, 0, 0, 1);
+
+$primary-font: 'Muli', sans-serif;
+
+@function set-text-color($color) {
+  @if (lightness($color) > 50) {
+    @return #000000; // Lighter backgorund, return dark color
+  } @else {
+    @return #ffffff; // Darker background, return light color
+  }
+}
+
+@mixin set-bg-hover-color($color) {
+  background: $color;
+  &:hover {
+    background: darken($color, 5%);
+  }
+}
+
+/* if background is dark
+$font-color: light;
+else
+$font-color: dark;
+*/

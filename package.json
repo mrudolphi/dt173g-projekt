@@ -1,0 +1,36 @@
+{
+  "name": "dt173g-projekt",
+  "version": "1.0.0",
+  "description": "Webbutveckling III - Projekt",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrudolphi/dt173g-projekt.git"
+  },
+  "author": "Maria Rudolphi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrudolphi/dt173g-projekt/issues"
+  },
+  "homepage": "https://github.com/mrudolphi/dt173g-projekt#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.10.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-concat-css": "^3.1.0",
+    "gulp-newer": "^1.4.0",
+    "gulp-smushit": "^1.2.0",
+    "gulp-uglify": "^3.0.1",
+    "gulp-watch": "^5.0.1",
+    "typescript": "^3.1.3"
+  },
+  "dependencies": {
+    "@types/jquery": "^3.3.22",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-typescript": "^5.0.0-alpha.3"
+  }
+}
