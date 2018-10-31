@@ -1,9 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Maria
- * Date: 2018-10-10
- * Time: 10:32
+ * DT173G - Webbutveckling III
+ * Projektarbete
+ * Maria Rudolphi
+ * 2018-10-31
+ * pt_app.php
  */
 
 /**
@@ -17,13 +18,13 @@ $input = json_decode(file_get_contents('php://input'),true);
 header('Content-Type: application/json; charset=UTF-8');
 
 /**
- * Model
+ * Get users data
+ * @param $userID int users id
  */
-
 function loadData($userID) {
 	global $conn;
 	// Get logged in user data
-	$sql = 'SELECT id, firstname, lastname, loggedInKey
+	$sql = 'SELECT id, firstname, lastname
 			FROM pt_users
 			WHERE id = ' . $userID;
 
@@ -54,6 +55,7 @@ function loadData($userID) {
 
 	$trainingResult = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
+	// Add data to arrays and send back result as json
 	$user = [];
 	$events = [];
 	$periods = [];
@@ -64,7 +66,6 @@ function loadData($userID) {
 		$user_arr['id'] = $row['id'];
 		$user_arr['firstname'] = $row['firstname'];
 		$user_arr['lastname'] = $row['lastname'];
-		$user_arr['loggedInKey'] = $row['loggedInKey'];
 		array_push($user, $user_arr);
 	}
 
@@ -115,50 +116,33 @@ function loadData($userID) {
 }
 
 /**
- * Controller
+ * Handle requests
  */
-
 switch ($request[0]) {
 	case 'users': {
 		switch ($method) {
 			case 'GET': {
-				// check $input['email'], if not exists, return error message "E-postadressen finns inte registrerad"
-				// If email exists, hash pwd, check passMD5
-				// If OK:
-				// Get id from user with email && pwd like input
-				// Call loadData to get data about user
+				// Get user data
+				// For now, userID is 1, just call loadData with request input as parameter
 				loadData($request[1]);
-				// else: error message "Lösenordet är fel"
 				break;
 			}
 			case 'POST': {
-				// (Typescript-check av lösenorden)
+				// Create new user
 				$userSql = 'SELECT id FROM pt_users WHERE email = "' . $input['email'] . '"';
 				$user = mysqli_query($conn, $userSql) or die(mysqli_error($conn));
 				if ($user) {
 					//echo 'E-postadressen är redan registrerad.';
 				}
 				else {
-					$sql = 'INSERT INTO pt_users (firstname, lastname, email, passMD5, loggedInKey)
+					$sql = 'INSERT INTO pt_users (firstname, lastname, email, passMD5)
 						VALUES (
 						"' . $input["firstname"] . '", 
 						"' . $input["lastname"] . '", 
 						"' . $input["email"] . '", 
-						"' . $input["passMD5"] . '", 
-						"' . $input["loggedInKey"] . '");';
+						"' . $input["passMD5"] . '");';
 
 					$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
-
-					//echo 'Kontot är registrerat';
-					/*$userSql = 'SELECT id FROM pt_users WHERE email = "' . $input['email'] . '"';
-					$user = mysqli_query($conn, $userSql) or die(mysqli_error($conn));
-					$userID = 0;
-					while ($row = mysqli_fetch_assoc($user)) {
-						$userID = $row['id'];
-					}
-
-					// Call loadData to get data about user
-					loadData($userID);*/
 				}
 				break;
 			}
@@ -173,7 +157,7 @@ switch ($request[0]) {
 	case 'events': {
 		switch ($method) {
 			case 'GET': {
-				// Test
+				// Get all events of specific user (only for test)
 				$sql = 'SELECT id, title FROM pt_events WHERE userId = ' . $request[1];
 				$dbResult = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
@@ -192,6 +176,7 @@ switch ($request[0]) {
 			}
 
 			case 'PUT': {
+				// Update specific event
 				$sql = 'UPDATE pt_events
 						SET title = "' . $input["title"] . '", 
 						date = "' . $input["date"] . '", 
@@ -205,12 +190,13 @@ switch ($request[0]) {
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}
 
 			case 'POST': {
+				// Add new events
 				$sql = 'INSERT INTO pt_events (title, date, week, type, color, place, details, results, userId)
 						VALUES (
 						"' . $input["title"] . '", 
@@ -225,17 +211,18 @@ switch ($request[0]) {
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}
 
 			case 'DELETE': {
+				// Delete specific event
 				$sql = 'DELETE FROM pt_events WHERE id = ' . $request[2] . ' AND userId = ' . $request[1];
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}
@@ -250,7 +237,7 @@ switch ($request[0]) {
 	case 'periods': {
 		switch ($method) {
 			case 'GET': {
-				// Test
+				// Get all periods of specific user (only for test)
 				$sql = 'SELECT id, title FROM pt_periods WHERE userId = ' . $request[1];
 				$dbResult = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
@@ -269,6 +256,7 @@ switch ($request[0]) {
 			}
 
 			case 'PUT': {
+				// Update specific period
 				$sql = 'UPDATE pt_periods
 						SET title = "' . $input["title"] . '",
 						color = "' . $input["color"] . '", 
@@ -278,12 +266,13 @@ switch ($request[0]) {
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}
 
 			case 'POST': {
+				// Add new period
 				$sql = 'INSERT INTO pt_periods (title, color, details, results, userId)
 						VALUES (
 						"' . $input["title"] . '", 
@@ -294,17 +283,18 @@ switch ($request[0]) {
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}
 
 			case 'DELETE': {
+				// Delete specific period
 				$sql = 'DELETE FROM pt_periods WHERE id = ' . $request[2] . ' AND userId = ' . $request[1];
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}
@@ -319,7 +309,7 @@ switch ($request[0]) {
 	case 'training': {
 		switch ($method) {
 			case 'GET': {
-				// Test
+				// Get all trainings of specific user (only for test)
 				$sql = 'SELECT id, year FROM pt_training WHERE userId = ' . $request[1];
 				$dbResult = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
@@ -338,6 +328,7 @@ switch ($request[0]) {
 			}
 
 			case 'PUT': {
+				// Update specific training
 				$sql = 'UPDATE pt_training
 						SET year = ' . $input["year"] . ',
 						week = ' . $input["week"] . ', 
@@ -348,12 +339,13 @@ switch ($request[0]) {
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}
 
 			case 'POST': {
+				// Add new training
 				$sql = 'INSERT INTO pt_training (year, week, periodId, details, results, userId)
 						VALUES (
 						' . $input["year"] . ',
@@ -365,17 +357,18 @@ switch ($request[0]) {
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}
 
 			case 'DELETE': {
+				// Delete specific training
 				$sql = 'DELETE FROM pt_training WHERE id = ' . $request[2] . ' AND userId = ' . $request[1];
 
 				$result = mysqli_query($conn, $sql) or die(mysqli_error($conn));
 
-				// get data for events
+				// Get data for user (uses in testing)
 				loadData($request[1]);
 				break;
 			}

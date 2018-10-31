@@ -1,0 +1,4 @@
+node_modules
+pub
+db_config.php
+package-lock.json

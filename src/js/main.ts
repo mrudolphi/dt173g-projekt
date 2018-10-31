@@ -1,18 +1,14 @@
-/*
+/**
  * DT173G - Webbutveckling III
- * Moment 4 - Typescript
+ * Projektarbete
  * Maria Rudolphi
- * 2018-10-03
- */
-
-
-/*
-Färg-fält: hexkod med en länk till hex-färger/beskrivning, eller colorpicker i jquery.
+ * 2018-10-31
+ * main.ts
  */
 
 "use strict";
 
-var baseURL = "/webbutvecklingmiun/dt173g/projekt/pub/pt_app.php/";
+var baseURL = "/webbutvecklingmiun/dt173g/projekt/pt_app.php/";
 
 // Class for all needed data in call to REST-web service
 class Call {
@@ -33,6 +29,7 @@ interface Data {
 }
 
 // Handle all PUT, POST, DELETE requests
+// Reloads page to call getData()
 function manageData(data: Data) {
 	let xmlHttp = new XMLHttpRequest();
 
@@ -51,7 +48,7 @@ function manageData(data: Data) {
 	}
 }
 
-// Handle GET requests, get all userData
+// Handle GET requests, get all userData in JSON format
 // Function called when page reloaded
 function getData(data: Data, callback: any) {
 	let xmlHttp = new XMLHttpRequest();
@@ -85,6 +82,7 @@ function setColor(color: string) {
 // On load event handlers
 $(function() {
 	// Get and use user data
+	// userID == 1 just for testing and show a userpage, before login function works
 	let userID: number = 1;
 	let url = baseURL + "users/" + userID;
 	let method = "GET";
@@ -123,6 +121,7 @@ $(function() {
 		}
 
 		// Set eventData when specific event is selected
+		// Makes delete-button enabled
 		$('#eventID').change(function() {
 			for (let i = 0; i < events.length; i++) {
 				if (events[i].id == $(this).val()) {
@@ -134,11 +133,13 @@ $(function() {
 					$('#eventPlace').val(events[i].place);
 					$('#eventDetails').val(events[i].details);
 					$('#eventResults').val(events[i].results);
+					$('#deleteEvent').removeAttr('disabled');
 				}
 			}
 		});
 
-		// set periodData when specific period is selected
+		// Set periodData when specific period is selected
+		// Makes delete-button enabled
 		$('#periodID').change(function() {
 			for (let i = 0; i < periods.length; i++) {
 				if (periods[i].id == $(this).val()) {
@@ -146,11 +147,13 @@ $(function() {
 					$('#periodColor').val(periods[i].color);
 					$('#periodDetails').val(periods[i].details);
 					$('#periodResults').val(periods[i].results);
+					$('#deletePeriod').removeAttr('disabled');
 				}
 			}
 		});
 
-		// set trainingData when specific trainingWeek is selected
+		// Set trainingData when specific trainingWeek is selected
+		// Makes delete-button enabled
 		$('#trainingID').change(function() {
 			for (let i = 0; i < training.length; i++) {
 				if (training[i].weekId == $(this).val()) {
@@ -159,24 +162,34 @@ $(function() {
 					$('#trainingPeriod').val(training[i].periodId);
 					$('#trainingDetails').val(training[i].weekDetails);
 					$('#trainingResults').val(training[i].weekResults);
+					$('#deleteTraining').removeAttr('disabled');
 				}
 			}
 		});
 
 		// Print out events in container
+		// Show details and results only if event has details and results
 		for (let i = 0; i < events.length; i++) {
+			let add = "";
+			add += '<article style="background:' + setColor(events[i].color) + '">' +
+			'<section class="event col-1 pointer">' +
+			'<span class="col-1-1">' + events[i].title + '</span>' +
+			'<span class="col-1-2">' + events[i].place + '</span>' +
+			'<span class="col-1-all">' + events[i].date + ' (v.' + events[i].week + ')</span>' +
+			'</section>' +
+			'<section class="showEvent col-1"><br>';
+			if (events[i].details) {
+				add += '<span class="col-1-all bold">Detaljer:</span>' +
+					'<span class="col-1-all">' + events[i].details + '</span>';
+			}
+			if (events[i].results) {
+				add += '<br><span class="col-1-all bold">Resultat:</span>' +
+					'<span class="col-1-all">' + events[i].results + '</span>';
+			}
+			add += '</section></article>';
+
 			$('.showEvents')
-				.append('<article style="background:' + setColor(events[i].color) + '">' +
-					'<section class="event col-1 pointer">' +
-					'<span class="col-1-1">' + events[i].title + '</span>' +
-					'<span class="col-1-2">' + events[i].place + '</span>' +
-					'<span class="col-1-3">' + events[i].date + ' (v.' + events[i].week + ')</span>' +
-					'</section>' +
-					'<section class="showEvent">' +
-					'<span class="col-1">' + events[i].details + '</span>' +
-					'<span class="col-1">' + events[i].results + '</span>' +
-					'</section>' +
-					'</article>');
+				.append(add);
 		}
 
 		// Hide part of event on start
@@ -187,23 +200,41 @@ $(function() {
 		});
 
 		// Print out training in container
+		// Show details and results only if training has details and results
 		for (let i = 0; i < training.length; i++) {
-			$('.showTrainings')
-				.append('<article style="background: ' + setColor(training[i].color) + '">' +
+			let add = "";
+			add += '<article style="background: ' + setColor(training[i].color) + '">' +
 					'<section class="training col-2 pointer">' +
 					'<span class="col-2-1">' + training[i].year + '</span>' +
 					'<span class="col-2-2">v.' + training[i].week + '</span>' +
 					'<span class="col-2-3">' + training[i].title + '</span>' +
 					'</section>' +
-					'<section class="showTraining col-2">' +
-					'<h4>Träning (v.' + training[i].week + ' ' + training[i].year + ')</h4>' +
-					'<span class="col-2-1">' + training[i].weekDetails + '</span>' +
-					'<span class="col-2-1">' + training[i].weekResults + '</span><br><br>' +
-					'<h4>Träningsperiod (' + training[i].title + ')</h4>' +
-					'<span class="col-2-1">' + training[i].periodDetails + '</span>' +
-					'<span class="col-2-1">' + training[i].periodResults + '</span>' +
-					'</section>' +
-					'</article>');
+					'<section class="showTraining col-2">';
+					if (training[i].weekDetails || training[i].weekResults) {
+						add += '<h4 class="col-2-all">Träning (v.' + training[i].week + ' ' + training[i].year + ')</h4>';
+					}
+					if (training[i].weekDetails) {
+						add += '<span class="col-2-all bold">Detaljer:</span>' +
+						'<span class="col-2-all">' + training[i].weekDetails + '</span>';
+					}
+					if (training[i].weekResults) {
+						add += '<span class="col-2-all bold">Resultat:</span>' +
+						'<span class="col-2-all">' + training[i].weekResults + '</span><br>';
+					}
+					if (training[i].periodDetails || training[i].periodResults) {
+						add += '<h4 class="col-2-all">Träningsperiod (' + training[i].title + ')</h4>';
+					}
+					if (training[i].periodDetails) {
+						add += '<span class="col-2-all bold">Detaljer:</span>' +
+						'<span class="col-2-all">' + training[i].periodDetails + '</span>';
+					}
+					if (training[i].periodResults) {
+						add += '<span class="col-2-all bold">Resultat:</span>' +
+						'<span class="col-2-all">' + training[i].periodResults + '</span>';
+					}
+					add += '</section></article>';
+
+			$('.showTrainings').append(add);
 		}
 
 		// Hide part of training on start
@@ -213,13 +244,20 @@ $(function() {
 			$(this).next('.showTraining').toggle();
 		});
 	});
+	// End getData()
+
+
+	// On start
 
 	// Hide add-boxes on start
 	// Show/hide when show-add-heading is clicked
-	$('.add-boxes').show();
+	$('.add-boxes').hide();
 	$('.show-add').on('click', function() {
 		$('.add-boxes').toggle();
 	});
+
+	// Make delete-buttons disabled on start
+	$('.delete-button').attr('disabled', 'disabled');
 
 	// Event listener and handler when click on addEvent
 	// Sets url, method and data and calls manageData() to add or update event

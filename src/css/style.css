@@ -1,15 +1,17 @@
-/*
+/**
  * DT173G - Webbutveckling III
- * Moment 4 - Typescript
+ * Projektarbete
  * Maria Rudolphi
- * 2018-10-03
+ * 2018-10-31
  * style.scss
  */
-/* if background is dark
-$font-color: light;
-else
-$font-color: dark;
-*/
+/**
+ * DT173G - Webbutveckling III
+ * Projektarbete
+ * Maria Rudolphi
+ * 2018-10-31
+ * _variables.scss
+ */
 * {
   margin: 0;
   padding: 0;
@@ -20,155 +22,169 @@ $font-color: dark;
 
 body {
   background: white;
-  font-family: "Muli", sans-serif;
-  /*.image{
-    width: 100%;
-    height: 100%;
-    background: url('../images/bg.jpg');
-    -webkit-background-size: 100%;
-    background-size: 100%;
-    position: fixed;
-    left: 0;
-    right: 0;
-    z-index: -1;
-    -webkit-filter: blur(10px);
-    filter: blur(10px);
-    opacity: 0.3;
-  }*/ }
+  font-family: "Muli", sans-serif; }
 
 header {
   width: 100%;
-  height: 150px;
+  height: 190px;
   top: 0;
-  clip-path: polygon(100% 0, 100% 60%, 90% 60%, 10% 100%, 0 100%, 0 0);
+  clip-path: polygon(100% 0, 100% 85%, 90% 85%, 10% 100%, 0 100%, 0 0);
   background: #0056e6;
-  color: #ffffff;
+  color: white;
   position: absolute;
   padding: 10px; }
   header .userName {
+    width: auto;
     float: left; }
   header .logout {
+    width: auto;
     float: right; }
-  header h1 {
-    clear: both;
-    margin: auto;
-    text-align: center;
-    line-height: 60px; }
+    header .logout a:link, header .logout a:visited {
+      color: white; }
+    header .logout a:hover, header .logout a:active {
+      color: #ddd; }
 
 .container {
   width: 100%;
-  padding: 30px;
-  margin: 150px auto 70px; }
+  height: auto;
+  padding: 10px;
+  margin: 200px auto 60px; }
   .container .plan-box {
-    width: 46%;
+    width: 100%;
     float: left;
     background: white;
-    color: #000000;
+    color: black;
     border: 1px solid #eaeaea;
     box-shadow: 2px 2px 4px #ddd;
     padding: 20px;
-    margin: 2%; }
-    .container .plan-box .col-1 {
-      grid-column: 1 / span 1; }
-    .container .plan-box .col-2 {
-      grid-column: 2 / span 2; }
+    margin-bottom: 20px; }
+    .container .plan-box article {
+      border: 1px solid white; }
+      .container .plan-box article h4 {
+        margin-top: 5px;
+        width: 100%; }
     .container .plan-box .col-1, .container .plan-box .col-2 {
       display: grid;
       grid-template-columns: repeat(5, 1fr); }
+      .container .plan-box .col-1 span, .container .plan-box .col-2 span {
+        padding: 5px; }
+      .container .plan-box .col-1 .col-1-all, .container .plan-box .col-2 .col-1-all {
+        grid-column: 1 / span 5; }
       .container .plan-box .col-1 .col-1-1, .container .plan-box .col-2 .col-1-1 {
         grid-column: 1 / span 2; }
       .container .plan-box .col-1 .col-1-2, .container .plan-box .col-2 .col-1-2 {
-        grid-column: 3 / span 2; }
-      .container .plan-box .col-1 .col-1-3, .container .plan-box .col-2 .col-1-3 {
-        grid-column: 5; }
+        grid-column: 3 / span 3; }
+      .container .plan-box .col-1 .col-2-all, .container .plan-box .col-2 .col-2-all {
+        grid-column: 1 / span 5; }
       .container .plan-box .col-1 .col-2-1, .container .plan-box .col-2 .col-2-1 {
         grid-column: 1; }
       .container .plan-box .col-1 .col-2-2, .container .plan-box .col-2 .col-2-2 {
         grid-column: 2; }
       .container .plan-box .col-1 .col-2-3, .container .plan-box .col-2 .col-2-3 {
         grid-column: 3 / span 3; }
-    .container .plan-box article {
-      border: 1px solid #ddd; }
 
 .add {
   width: 100%;
-  max-height: 82%;
+  max-height: calc(100% - 205px);
   overflow: auto;
   position: fixed;
-  bottom: 30px; }
+  bottom: 20px; }
   .add .show-add {
-    padding: 20px;
+    padding: 10px;
     background: #005fff;
-    color: #ffffff; }
+    color: white; }
     .add .show-add:hover {
-      background: #0056e6; }
+      background: #004ccc; }
   .add .add-boxes {
     width: 100%;
     display: flex;
     justify-content: center;
-    background: #fefefe;
-    color: #000000;
-    padding: 10px; }
+    flex-direction: column;
+    background: #f7f7f7;
+    color: black;
+    padding: 20px; }
     .add .add-boxes .add-box {
-      width: 28%;
-      min-width: 200px;
+      width: 100%;
       padding: 10px;
-      background: #fff;
-      color: #000000;
+      background: white;
+      color: black;
       border: 1px solid #ddd;
       border-radius: 10px;
-      margin: 1%; }
-      .add .add-boxes .add-box .clear {
-        margin-bottom: 10px; }
+      margin: 20px auto; }
       .add .add-boxes .add-box label {
-        width: 100%; }
-      .add .add-boxes .add-box input, .add .add-boxes .add-box select {
-        width: 75%; }
-      .add .add-boxes .add-box textarea, .add .add-boxes .add-box h3, .add .add-boxes .add-box h4, .add .add-boxes .add-box a {
-        width: 100%; }
+        margin-bottom: 5px; }
       .add .add-boxes .add-box input, .add .add-boxes .add-box select, .add .add-boxes .add-box textarea {
-        padding: 7px;
-        background: #fefefe;
+        padding: 13px;
+        background: #f7f7f7;
         border: 1px solid #ddd;
-        border-radius: 10px; }
+        border-radius: 10px;
+        margin-bottom: 10px; }
+      .add .add-boxes .add-box .add-button {
+        width: 100%;
+        background: #0056e6;
+        color: white;
+        margin: 0 auto 10px; }
+        .add .add-boxes .add-box .add-button:hover {
+          background: #0043b3; }
+      .add .add-boxes .add-box .delete-button {
+        width: 100%;
+        background: #c80000;
+        color: white;
+        margin: auto; }
+        .add .add-boxes .add-box .delete-button:hover {
+          background: #950000; }
+      .add .add-boxes .add-box .delete-button:disabled {
+        background: #d0d0d0;
+        color: black;
+        cursor: default; }
+        .add .add-boxes .add-box .delete-button:disabled :hover {
+          background: #d0d0d0; }
       .add .add-boxes .add-box button {
         padding: 10px;
         border-radius: 10px;
         border: 1px solid #ddd;
         box-shadow: 2px 2px 4px #ddd; }
-      .add .add-boxes .add-box .add-button {
-        width: 60%;
-        background: #0056e6;
-        color: #ffffff; }
-        .add .add-boxes .add-box .add-button:hover {
-          background: #004ccc; }
-      .add .add-boxes .add-box .delete-button {
-        width: 38%;
-        background: #c80000;
-        color: #ffffff; }
-        .add .add-boxes .add-box .delete-button:hover {
-          background: #af0000; }
+      .add .add-boxes .add-box a {
+        font-size: 18px; }
 
 footer {
   width: 100%;
-  height: 30px;
+  height: 20px;
   position: fixed;
   bottom: 0;
-  background: #222222;
-  color: #ffffff;
-  font-size: 12px;
-  text-align: center;
-  padding: 5px 0; }
+  background: #0d0d0d;
+  color: white;
+  font-size: 10px;
+  line-height: 20px;
+  text-align: center; }
 
 /**
-Helpers
+Text & Helpers
  */
-h1, h2, h3 {
+h1, h2, h3, h4 {
   text-align: center;
-  margin: auto; }
+  margin: auto;
+  width: 100%; }
 
-h4, h5, h6 {
+h5, h6 {
   text-align: left; }
+
+h1 {
+  font-size: 40px; }
+
+h2 {
+  font-size: 30px; }
+
+h3 {
+  font-size: 24px; }
+
+h4, button {
+  font-size: 20px; }
+
+span, p, label, input, select, textarea {
+  width: 100%;
+  font-family: "Muli", sans-serif;
+  font-size: 16px; }
 
 .clear::after {
   content: "";
@@ -177,5 +193,48 @@ h4, h5, h6 {
 
 .pointer {
   cursor: pointer; }
+
+.bold {
+  font-weight: bold; }
+
+/**
+Responsive design, screen-with 900px +
+ */
+@media screen and (min-width: 900px) {
+  header {
+    height: 150px;
+    clip-path: polygon(100% 0, 100% 60%, 90% 60%, 10% 100%, 0 100%, 0 0); }
+  .container {
+    padding: 30px;
+    margin: 150px auto 60px; }
+    .container .plan-box {
+      width: 46%;
+      margin: 2%; }
+  .add {
+    max-height: calc(100% - 155px); }
+    .add .add-boxes {
+      flex-direction: row;
+      padding: 10px; }
+      .add .add-boxes .add-box {
+        width: 28%;
+        margin: 1%; }
+        .add .add-boxes .add-box label {
+          width: 100%; }
+        .add .add-boxes .add-box input, .add .add-boxes .add-box select {
+          width: 75%; }
+        .add .add-boxes .add-box textarea, .add .add-boxes .add-box a {
+          width: 100%; }
+        .add .add-boxes .add-box input, .add .add-boxes .add-box select, .add .add-boxes .add-box textarea {
+          padding: 7px; }
+        .add .add-boxes .add-box .add-button {
+          width: 60%;
+          margin: 0 auto; }
+        .add .add-boxes .add-box .delete-button {
+          width: 38%; }
+  /**
+  Text
+  */
+  h1 {
+    line-height: 80px; } }
 
 /*# sourceMappingURL=maps/style.css.map */
