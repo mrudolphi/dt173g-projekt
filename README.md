@@ -1,5 +1,5 @@
 # dt173g-projekt
-##Webbutveckling III - Projektarbete
+## Webbutveckling III - Projektarbete
 **Projektet är en sammanställning av kursens tidigare moment:**
 * Git
 * SASS
